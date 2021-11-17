@@ -9,4 +9,18 @@ data class UserProfile(
 val userProfileList = listOf(
     UserProfile("John Doe", true, R.drawable.profile_picture),
     UserProfile("Ana Joans", false, R.drawable.profile_picture2),
+    UserProfile("John Doe", true, R.drawable.profile_picture),
+    UserProfile("Ana Joans", false, R.drawable.profile_picture2),
+    UserProfile("John Doe", true, R.drawable.profile_picture),
+    UserProfile("Ana Joans", false, R.drawable.profile_picture2),
+    UserProfile("John Doe", true, R.drawable.profile_picture),
+    UserProfile("Ana Joans", false, R.drawable.profile_picture2),
+    UserProfile("John Doe", true, R.drawable.profile_picture),
+    UserProfile("Ana Joans", false, R.drawable.profile_picture2),
+    UserProfile("John Doe", true, R.drawable.profile_picture),
+    UserProfile("Ana Joans", false, R.drawable.profile_picture2),
+    UserProfile("John Doe", true, R.drawable.profile_picture),
+    UserProfile("Ana Joans", false, R.drawable.profile_picture2),
+    UserProfile("John Doe", true, R.drawable.profile_picture),
+    UserProfile("Ana Joans", false, R.drawable.profile_picture2),
 )
