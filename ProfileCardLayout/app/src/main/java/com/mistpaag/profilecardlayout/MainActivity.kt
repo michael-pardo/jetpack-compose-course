@@ -1,7 +1,6 @@
 package com.mistpaag.profilecardlayout
 
 import android.os.Bundle
-import android.text.Layout
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
@@ -28,14 +27,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ProfileCardLayoutTheme {
-                MainScreen()
+                MainScreen(userProfiles = userProfileList)
             }
         }
     }
 }
 
 @Composable
-fun MainScreen() {
+fun MainScreen(userProfiles: List<UserProfile> = userProfileList) {
     Scaffold(
         topBar = { AppBar() }
     ) {
@@ -43,8 +42,9 @@ fun MainScreen() {
             modifier = Modifier.fillMaxSize(),
         ) {
             Column {
-                ProfileCard()
-                ProfileCard()
+                userProfiles.forEach { userProfile ->
+                    ProfileCard(userProfile = userProfile)
+                }
             }
         }
     }
@@ -64,7 +64,7 @@ fun AppBar(){
 }
 
 @Composable
-fun ProfileCard(){
+fun ProfileCard(userProfile: UserProfile){
     Card(
         modifier = Modifier
             .padding(top = 8.dp, bottom = 4.dp, start = 16.dp, end = 16.dp)
@@ -78,25 +78,25 @@ fun ProfileCard(){
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            ProfilePicture()
-            ProfileContent()
+            ProfilePicture(userProfile.drawableId, userProfile.status)
+            ProfileContent(userProfile.name, userProfile.status)
         }
     }
 }
 
 @Composable
-fun ProfilePicture() {
+fun ProfilePicture(drawableId: Int, onlineStatus: Boolean) {
     Card(
         shape = CircleShape,
         border = BorderStroke(
             width = 2.dp,
-            color = MaterialTheme.colors.lightGreen
+            color = if (onlineStatus) MaterialTheme.colors.lightGreen else Color.Red
         ),
         modifier = Modifier.padding(16.dp),
         elevation = 4.dp,
     ) {
         Image(
-            painter = painterResource(id = R.drawable.profile_picture),
+            painter = painterResource(id = drawableId),
             contentDescription = "Content description",
             modifier = Modifier.size(68.dp),
             contentScale = ContentScale.Crop
@@ -105,21 +105,25 @@ fun ProfilePicture() {
 }
 
 @Composable
-fun ProfileContent() {
+fun ProfileContent(name: String, onlineStatus: Boolean) {
     Column(
         modifier = Modifier
             .padding(8.dp)
             .fillMaxWidth()
     ) {
-        Text(
-            text = "John Doe",
-            style = MaterialTheme.typography.h5,
-        )
+        CompositionLocalProvider(LocalContentAlpha provides if (onlineStatus) 1f else ContentAlpha.disabled) {
+            Text(
+                text = name,
+                style = MaterialTheme.typography.h5,
+            )
+        }
 
-        Text(
-            text = "Active now",
-            style = MaterialTheme.typography.body2,
-        )
+        CompositionLocalProvider( LocalContentAlpha provides ContentAlpha.medium){
+            Text(
+                text = if (onlineStatus) "Active now" else "Offline",
+                style = MaterialTheme.typography.body2,
+            )
+        }
 
     }
 }
