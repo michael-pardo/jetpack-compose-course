@@ -21,6 +21,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberImagePainter
+import coil.transform.CircleCropTransformation
 import com.mistpaag.profilecardlayout.ui.theme.ProfileCardLayoutTheme
 import com.mistpaag.profilecardlayout.ui.theme.lightGreen
 
@@ -98,9 +100,14 @@ fun ProfilePicture(drawableId: Int, onlineStatus: Boolean) {
         elevation = 4.dp,
     ) {
         Image(
-            painter = painterResource(id = drawableId),
+            painter = rememberImagePainter(
+                drawableId,
+                builder = {
+                    transformations(CircleCropTransformation())
+                },
+            ),
             contentDescription = "Content description",
-            modifier = Modifier.size(68.dp),
+            modifier = Modifier.size(72.dp),
             contentScale = ContentScale.Crop
         )
     }
