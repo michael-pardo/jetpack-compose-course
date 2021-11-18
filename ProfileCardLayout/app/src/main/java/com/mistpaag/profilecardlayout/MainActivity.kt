@@ -23,9 +23,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import com.mistpaag.profilecardlayout.ui.theme.ProfileCardLayoutTheme
@@ -49,8 +51,13 @@ fun UsersApplication(userProfiles: List<UserProfile> = userProfileList){
         composable("users_list"){
             UserListScreen(userProfiles = userProfiles, navController)
         }
-        composable("user_details"){
-            UserProfileDetailScreen()
+        composable(
+            route = "user_details/{userId}",
+            arguments = listOf(navArgument("userId"){
+                type = NavType.IntType
+            })
+        ){ navBackStackEntry ->
+            UserProfileDetailScreen(navBackStackEntry.arguments!!.getInt("userId"))
         }
     }
 }
@@ -66,7 +73,7 @@ fun UserListScreen(userProfiles: List<UserProfile>, navController: NavHostContro
             LazyColumn {
                 items(userProfiles){ userProfile->
                     ProfileCard(userProfile = userProfile){
-                        navController?.navigate("user_details")
+                        navController?.navigate("user_details/${userProfile.id}")
                     }
                 }
             }
@@ -75,7 +82,8 @@ fun UserListScreen(userProfiles: List<UserProfile>, navController: NavHostContro
 }
 
 @Composable
-fun UserProfileDetailScreen(userProfile: UserProfile = userProfileList[0]) {
+fun UserProfileDetailScreen(userId: Int) {
+    val userProfile = userProfileList.first { userProfile -> userId == userProfile.id }
     Scaffold(
         topBar = { AppBar() }
     ) {
@@ -184,7 +192,7 @@ fun ProfileContent(name: String, onlineStatus: Boolean, alignment: Alignment.Hor
 @Composable
 fun UserProfileDetailsPreview() {
     ProfileCardLayoutTheme {
-        UserProfileDetailScreen()
+        UserProfileDetailScreen(userProfileList.first().id)
     }
 }
 
