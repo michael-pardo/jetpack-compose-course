@@ -10,7 +10,7 @@ class MealsCategoriesViewModel(
 
 
     fun getMeals() : List<MealResponse> {
-        return repository.getMeals().categories
+        return repository.getMeals()?.categories.orEmpty()
     }
 
 }

@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
 fun MealsCategoriesScreen() {
     val viewModel : MealsCategoriesViewModel = viewModel()
     val meals = viewModel.getMeals()
-    Text(text = "Hello !")
+    Text(text = meals.toString())
 }
 
 @Preview(showBackground = true)
