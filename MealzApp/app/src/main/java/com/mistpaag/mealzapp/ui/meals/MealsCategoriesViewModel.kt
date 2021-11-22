@@ -10,10 +10,8 @@ class MealsCategoriesViewModel(
 ): ViewModel() {
 
 
-    fun getMeals(successCallback: (response: MealsCategoriesResponse?) -> Unit) {
-        return repository.getMeals{
-            successCallback(it)
-        }
+    suspend fun getMeals(): List<MealResponse> {
+        return repository.getMeals().categories
     }
 
 }
